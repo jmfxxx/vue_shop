@@ -6,7 +6,9 @@ import {
   Main,
   Footer, Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn, Switch,
   Tooltip, Pagination, Dialog,
-  MessageBox
+  MessageBox, Tag, Tree,
+  Select,
+  Option
 
 } from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/zh-TW'
@@ -37,6 +39,10 @@ Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
+Vue.use(Tag)
+Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
 // 掛載提示組到原型，所有都可以使用$message來使用
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

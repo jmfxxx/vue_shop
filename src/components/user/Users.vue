@@ -92,6 +92,7 @@
                 type="warning"
                 icon="el-icon-setting"
                 size="mini"
+                @click="setUserRole(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -169,6 +170,34 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="editUserInfo">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 設定使用者角色對話框 -->
+    <el-dialog
+      title="設定使用者角色"
+      :visible.sync="setRoleDialogVisible"
+      width="50%"
+      @close="setRoleDialogClose"
+    >
+    <div>
+     <p>使用者名稱:{{CurrentUserInfo.username}}</p>
+     <p>目前角色:{{CurrentUserInfo.role_name}}</p>
+    <p>指定新角色:
+      <el-select v-model="selectRoleId" placeholder="請選擇">
+    <el-option
+      v-for="item in RoleList"
+      :key="item.id"
+      :label="item.roleName"
+      :value="item.id">
+    </el-option>
+  </el-select>
+  </p>
+    </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRightDialogClose=false">取 消</el-button>
+        <el-button type="primary" @click="saveRoleInfo"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -261,7 +290,16 @@ export default {
           { required: true, message: '請輸入使用者電話', trigger: 'blur' },
           { validator: checkMobile }
         ]
-      }
+      },
+      // 控制使用者角色對話框
+      setRoleDialogVisible: false,
+      // 當前使用者
+      CurrentUserInfo: {},
+      // 角色權限列表RoleList
+      RoleList: [],
+      // 已選中的id值(新角色id)
+      selectRoleId: ''
+
     }
   },
   created() {
@@ -269,6 +307,7 @@ export default {
     this.getUserList()
   },
   methods: {
+    // 取得用戶所有資料
     async getUserList() {
       const { data: res } = await this.$http.get('users', {
         params: this.queryInfo
@@ -374,11 +413,15 @@ export default {
     async delUser(id) {
       console.log('---------------')
       console.log(id)
-      const result = await this.$confirm('此操作會永久刪除使用者,是否繼續?', '提示', {
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).catch(err => err)
+      const result = await this.$confirm(
+        '此操作會永久刪除使用者,是否繼續?',
+        '提示',
+        {
+          confirmButtonText: '確定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
       console.log(result)
       if (result !== 'confirm') {
         return
@@ -393,6 +436,41 @@ export default {
       this.getUserList()
       // 回應訊息
       this.$message.success('刪除資料成功!!!!')
+    },
+    // 展示分配角色對話框
+    async setUserRole(userinfo) {
+      console.log(userinfo)
+      this.CurrentUserInfo = userinfo
+      // 列出角色列表
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        return this.$message.error('讀取權限角色列表失敗!!!!')
+      }
+      this.RoleList = res.data
+      console.log(this.RoleList)
+      // this.rightList = res.data
+      // console.log(this.rightList)
+      this.setRoleDialogVisible = true
+    },
+    // 點擊後確定新角色
+    async saveRoleInfo() {
+      if (!this.selectRoleId) {
+        return this.$message.error('請選擇要指定的角色!!!!')
+      }
+      const { data: res } = await this.$http.put(`users/${this.CurrentUserInfo.id}/role`, {
+        rid: this.selectRoleId
+      })
+      if (res.meta.status !== 200) {
+        return this.$message.error('更新角色列表失敗!!!!')
+      }
+      this.$message.success('更新角色成功')
+      this.getUserList()
+      this.setRoleDialogVisible = false
+    },
+    setRoleDialogClose() {
+      // 清除選擇的項目，避免取得上次選擇的值
+      this.selectRoleId = ''
+      this.CurrentUserInfo = {}
     }
   }
 }
