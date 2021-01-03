@@ -8,7 +8,7 @@ import {
   Tooltip, Pagination, Dialog,
   MessageBox, Tag, Tree,
   Select,
-  Option
+  Option, Cascader
 
 } from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/zh-TW'
@@ -43,6 +43,7 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Cascader)
 // 掛載提示組到原型，所有都可以使用$message來使用
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
