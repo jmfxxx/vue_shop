@@ -165,7 +165,7 @@ export default {
       // 產品分類名稱驗証規則
       AddCatFormRules: {
         cat_name: [
-          { required: true, message: '請輸入分類名稱', trigger: blur },
+          { required: true, message: '請輸入分類名稱', trigger: 'blur' },
           {
             min: 2,
             max: 16,

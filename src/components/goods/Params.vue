@@ -317,7 +317,7 @@ export default {
       // 判斷是靜態或是動態的資料指定給對應的變數
       res.data.forEach(item => {
         // 如果為空，則給空陣列，避免無資料時會多一個空白
-        item.attr_vals = item.attr_vals !== '' ? item.attr_vals.split(' ') : []
+        item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
         // 控制文本框顯示與隱藏
         item.inputVisible = false
         // 文本框輸入的值
@@ -357,6 +357,7 @@ export default {
     },
     // showEditDialog 點擊按鈕展示修改對話框
     async showEditDialog(attrid) {
+      console.log('88888')
       // 發起請求，依傳入id取得
       const { data: res } = await this.$http.get(
         `categories/${this.catId}/attributes/${attrid}`,
