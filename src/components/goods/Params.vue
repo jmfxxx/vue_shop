@@ -357,7 +357,6 @@ export default {
     },
     // showEditDialog 點擊按鈕展示修改對話框
     async showEditDialog(attrid) {
-      console.log('88888')
       // 發起請求，依傳入id取得
       const { data: res } = await this.$http.get(
         `categories/${this.catId}/attributes/${attrid}`,

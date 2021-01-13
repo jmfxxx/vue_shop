@@ -11,7 +11,8 @@ import {
   Option, Cascader, Alert, Tabs, TabPane,
   Steps, Step,
   Checkbox, CheckboxGroup,
-  Upload
+  Upload,
+  Timeline, TimelineItem
 
 } from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/zh-TW'
@@ -55,6 +56,8 @@ Vue.use(Step)
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(Upload)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 // 掛載提示組到原型，所有都可以使用$message來使用
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
